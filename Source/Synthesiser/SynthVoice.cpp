@@ -1,12 +1,11 @@
 #include "SynthVoice.h"
 
-
-SynthVoice::SynthVoice(){
+ContinousSynth::ContinousSynth(){
     
     
 }
 
-void SynthVoice::prepare(const juce::dsp::ProcessSpec& spec){
+void ContinousSynth::prepare(const juce::dsp::ProcessSpec& spec){
     
     OSC.prepare(spec);
     OSC.initialise([](float x) {return x < 0.0f ? -1.0f : 1.0f;}); //Initalised as a square wave , implementing OSC switching for individual voicing
@@ -15,33 +14,30 @@ void SynthVoice::prepare(const juce::dsp::ProcessSpec& spec){
     
 }
 
-bool SynthVoice::canPlaySound(juce::SynthesiserSound* sound) {
-    return true; 
+void ContinousSynth::renderNextBlock(juce::AudioBuffer<float>& outputBuffer , int startSample , int numSamples){
+    
+    juce::ScopedNoDenormals noDenormals;
+    
+    juce::dsp::AudioBlock<float> block(outputBuffer);
+    auto subBlock = block.getSubBlock(0, (size_t)numSamples);
+    juce::dsp::ProcessContextReplacing<float> context(subBlock);
+    
+    OSC.process(context);
+    ADSR.applyEnvelopeToBuffer(outputBuffer, 0, numSamples);
     
 }
 
-void SynthVoice::startNote(int midiNoteNumber , float velocity , juce::SynthesiserSound* sound , int currentPitchWheelPosition) {
+void ContinousSynth::setOscFrequency(float frequency){
     
-    
-}
-
-void SynthVoice::stopNote(float velocity , bool allowTailOff) {
-    
+    OSC.setFrequency(frequency); 
     
 }
 
-void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer , int startSample , int numSamples) {
+void ContinousSynth::startADSR(){
     
-    
+    ADSR.noteOn();
 }
-
-void SynthVoice::pitchWheelMoved(int newValue) {
+void ContinousSynth::releaseADSR(){
     
-    
-    
-}
-
-void SynthVoice::controllerMoved(int controllerNumber, int newValue) {
-    
-    
+    ADSR.noteOff();
 }

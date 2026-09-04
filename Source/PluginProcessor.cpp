@@ -2,12 +2,35 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-
-iphoneAudioAudioProcessor::iphoneAudioAudioProcessor(){}
+iphoneAudioAudioProcessor::iphoneAudioAudioProcessor(): AudioProcessor (BusesProperties()
+.withOutput ("Output", juce::AudioChannelSet::stereo(), true)){
+    
+    
+}
 iphoneAudioAudioProcessor::~iphoneAudioAudioProcessor() {}
 
 //==============================================================================
 void iphoneAudioAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock) {
+    
+    juce::dsp::ProcessSpec processSpec;
+    processSpec.sampleRate = sampleRate;
+    processSpec.numChannels = 2;
+    processSpec.maximumBlockSize = (uint32)samplesPerBlock;
+    
+    Synth.prepare(processSpec);
+    
+    
+    /**
+    juce::dsp::ProcessSpec procSpec;
+    procSpec.sampleRate = sampleRate;
+    procSpec.numChannels = (juce::uint32)getTotalNumOutputChannels();
+    procSpec.maximumBlockSize = (juce::uint32)samplesPerBlock;
+    
+    // Initialise the raw oscillator as a clean sine wave
+    testOsc.prepare(procSpec);
+    testOsc.initialise([](float x) { return std::sin(x); });
+    testOsc.setFrequency(440.0f); // 440 Hz **/
+    
     
 }
 void iphoneAudioAudioProcessor::releaseResources() {
@@ -21,7 +44,14 @@ bool iphoneAudioAudioProcessor::isBusesLayoutSupported (const BusesLayout& layou
 
 void iphoneAudioAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiBuffer) {
     
+    juce::ScopedNoDenormals noDenormals;
+    auto totalNumInputChannels  = getTotalNumInputChannels();
+    auto totalNumOutputChannels = getTotalNumOutputChannels();
+    
     buffer.clear();
+    
+    Synth.renderNextBlock(buffer, 0, buffer.getNumSamples());
+    
 }
 
 //==============================================================================

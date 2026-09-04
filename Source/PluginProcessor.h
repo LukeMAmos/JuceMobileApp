@@ -1,5 +1,8 @@
 #pragma once
 #include <JuceHeader.h>
+#include "Synthesiser/SynthVoice.h"
+
+
 
 class iphoneAudioAudioProcessor : public juce::AudioProcessor
 {
@@ -41,7 +44,15 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     //==============================================================================
     
+    ContinousSynth& getSynth() { return Synth; }
+
+    
 private:
+    
+    juce::dsp::Oscillator<float> testOsc;
+    
+    int numVoices = 8;
+    ContinousSynth Synth; 
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (iphoneAudioAudioProcessor)
 };

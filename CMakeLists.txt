@@ -33,24 +33,19 @@ juce_add_plugin(iphoneAudio
 )
 
 if(IOS)
-	set_target_properties(iphoneAudio_Standalone PROPERTIES
-	
-	 XCODE_ATTRIBUTE_CODE_SIGN_STYLE "Automatic"
-        XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "Apple Development"
-        
-        # Activates automatic code signing inside Xcode
+    set_target_properties(iphoneAudio_Standalone PROPERTIES
         XCODE_ATTRIBUTE_CODE_SIGN_STYLE "Automatic"
-        
-        # Targets 64-bit arm processors used in physical iOS hardware
+        XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "Apple Development"
         XCODE_ATTRIBUTE_ARCHS "arm64"
         XCODE_ATTRIBUTE_VALID_ARCHS "arm64"
-        
-        # Device Family IDs: "1" targets iPhone, "2" targets iPad, "1,2" targets both
         XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1"
-
-	)
-
-
+        
+        # Cleaned XML string without hidden formatting tabs inside tags
+        CUSTOM_PLIST "<plist><dict><key>UIBackgroundModes</key><array><string>audio</string></array><key>NSMicrophoneUsageDescription</key><string>Audio playback authorization.</string></dict></plist>"
+    )
+    
+    # Overrides iOS ambient muting defaults
+    target_compile_definitions(iphoneAudio PRIVATE JUCE_AUDIO_ALLOWS_ANY_OS_AUDIO_RULES=1)
 endif()
 
 
@@ -68,6 +63,7 @@ target_sources(iphoneAudio
     Source/Synthesiser/SynthVoice.h
     Source/Synthesiser/SynthVoice.cpp
 )
+
 
 
 

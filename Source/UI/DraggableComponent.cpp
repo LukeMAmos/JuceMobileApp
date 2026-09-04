@@ -3,7 +3,8 @@
 DraggableComponent::DraggableComponent(){
     
     setWantsKeyboardFocus(true);
-
+    
+    setDiameter(50.0f);
 }
 
 void DraggableComponent::mouseDown(const juce::MouseEvent &event){
@@ -11,23 +12,29 @@ void DraggableComponent::mouseDown(const juce::MouseEvent &event){
     dragger.startDraggingComponent(this, event);
     
     //Use the mousedown function to trigger a note
+    if(onDragStart)
+        onDragStart(getPositionXCentre(), getPositionYCentre());
     
 }
 
 void DraggableComponent::mouseDrag(const juce::MouseEvent &event){
     
     dragger.dragComponent(this, event, nullptr);
-
+    
+    if(onDragMove)
+        onDragMove(getPositionXCentre(), getPositionYCentre());
 }
 
 void DraggableComponent::mouseUp(const juce::MouseEvent &event){
     
+    if(onDragEnd)
+        onDragEnd();
 }
 
 
 void DraggableComponent::paint(juce::Graphics &g){
     
-    g.setColour (juce::Colours::transparentBlack);
+    g.setColour (juce::Colours::blueviolet);
 
     g.fillEllipse(0, 0, diameter, diameter);
 }
@@ -44,4 +51,18 @@ void DraggableComponent::setDiameter(float diameterIn){
 float DraggableComponent::getDiameter(){
     
     return diameter;
+}
+
+void DraggableComponent::setStartFunction(std::function<void(float xpos,float ypos)> function){
+    
+    onDragStart = function;
+}
+void DraggableComponent::setMoveFunction(std::function<void(float xpos,float ypos)> function){
+    
+    onDragMove = function;
+}
+void DraggableComponent::setEndFunction(std::function<void()> function){
+    
+    onDragEnd = function;
+    
 }

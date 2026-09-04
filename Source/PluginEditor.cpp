@@ -7,6 +7,28 @@ iphoneAudioAudioProcessorEditor::iphoneAudioAudioProcessorEditor (iphoneAudioAud
     addAndMakeVisible(draggableComponent);
     
     
+    draggableComponent.setStartFunction([this](float xpos , float ypos){
+        
+        float mappedFreq = juce::jmap(xpos , 0.0f , (float)getWidth() , 100.0f , 1000.0f);
+        audioProcessor.getSynth().setOscFrequency(mappedFreq);
+        audioProcessor.getSynth().startADSR(); 
+        
+    });
+    
+    draggableComponent.setMoveFunction([this](float xpos , float ypos){
+       
+            
+        float mappedFreq = juce::jmap(xpos , 0.0f , (float)getWidth() , 100.0f , 1000.0f);
+        audioProcessor.getSynth().setOscFrequency(mappedFreq);
+        
+    });
+    
+    draggableComponent.setEndFunction([this](){
+        
+        audioProcessor.getSynth().releaseADSR();
+
+    });
+    
 }
 
 iphoneAudioAudioProcessorEditor::~iphoneAudioAudioProcessorEditor(){
