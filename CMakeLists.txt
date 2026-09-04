@@ -65,7 +65,11 @@ target_sources(iphoneAudio
     Source/PluginEditor.h
     Source/UI/DraggableComponent.h
     Source/UI/DraggableComponent.cpp
+    Source/Synthesiser/SynthVoice.h
+    Source/Synthesiser/SynthVoice.cpp
 )
+
+
 
 source_group("Source" FILES
     Source/PluginProcessor.cpp
@@ -78,6 +82,13 @@ source_group("Source\\UI" FILES
 
     Source/UI/DraggableComponent.h
     Source/UI/DraggableComponent.cpp
+
+)
+
+source_group("Source\\Synthesiser" FILES
+
+    Source/Synthesiser/SynthVoice.h
+    Source/Synthesiser/SynthVoice.cpp
 
 )
 

@@ -9,7 +9,8 @@ DraggableComponent::DraggableComponent(){
 void DraggableComponent::mouseDown(const juce::MouseEvent &event){
     
     dragger.startDraggingComponent(this, event);
-
+    
+    //Use the mousedown function to trigger a note
     
 }
 
@@ -26,7 +27,7 @@ void DraggableComponent::mouseUp(const juce::MouseEvent &event){
 
 void DraggableComponent::paint(juce::Graphics &g){
     
-    g.setColour (juce::Colours::blue);
+    g.setColour (juce::Colours::transparentBlack);
 
     g.fillEllipse(0, 0, diameter, diameter);
 }
