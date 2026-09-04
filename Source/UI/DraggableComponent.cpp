@@ -1,45 +1,46 @@
-#include "DraggableComponent.hpp"
+#include "DraggableComponent.h"
 
-draggableComponent::draggableComponent(){
+DraggableComponent::DraggableComponent(){
     
     setWantsKeyboardFocus(true);
-    
-    slider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
-    slider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
-    
-    addAndMakeVisible(slider);
-    //Constructor
+
 }
 
-void draggableComponent::mouseDown(const juce::MouseEvent &event){
+void DraggableComponent::mouseDown(const juce::MouseEvent &event){
     
     dragger.startDraggingComponent(this, event);
 
     
 }
 
-void draggableComponent::mouseDrag(const juce::MouseEvent &event){
+void DraggableComponent::mouseDrag(const juce::MouseEvent &event){
     
     dragger.dragComponent(this, event, nullptr);
 
 }
 
-void draggableComponent::mouseUp(const juce::MouseEvent &event){
-
+void DraggableComponent::mouseUp(const juce::MouseEvent &event){
     
 }
 
 
-void draggableComponent::paint(juce::Graphics &g){
-    
-    std::cout<<"Here is myX :"<<getX() <<"\n";
+void DraggableComponent::paint(juce::Graphics &g){
     
     g.setColour (juce::Colours::blue);
 
     g.fillEllipse(0, 0, diameter, diameter);
 }
 
-void draggableComponent::resized(){
+void DraggableComponent::resized(){
+
+}
+
+void DraggableComponent::setDiameter(float diameterIn){
     
-    slider.setBounds(( getWidth() /2 ) - 35, (getHeight() / 2) - 35 , 70, 70);
+    diameter = diameterIn; 
+}
+
+float DraggableComponent::getDiameter(){
+    
+    return diameter;
 }

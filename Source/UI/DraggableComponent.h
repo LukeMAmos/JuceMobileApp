@@ -1,10 +1,10 @@
 #include <JuceHeader.h>
 
-class draggableComponent : public juce::Component
+class DraggableComponent : public juce::Component
 {
     
 public:
-    draggableComponent();
+    DraggableComponent();
     
     void mouseDown(const juce::MouseEvent& event) override ;
     
@@ -16,16 +16,16 @@ public:
     
     void resized() override;
     
-    
-    
-    int getPositionXCentre(){return getX() + diameter / 2;};
-    int getPositionYCentre(){return getY() + diameter / 2;};
+    float getPositionXCentre(){return (float)getX() + diameter / 2.0f;}
+    float getPositionYCentre(){return (float)getY() + diameter / 2.0f;}
     
     bool mDown = false;
-    juce::Slider slider;
+    
+    void setDiameter(float diameterIn);
+    float getDiameter();
 private:
     
-    int diameter = 100;
+    float diameter = 100;
     
     juce::ComponentDragger dragger;
     

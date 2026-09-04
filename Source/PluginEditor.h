@@ -1,6 +1,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "UI/DraggableComponent.h"
 
 class iphoneAudioAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
@@ -17,6 +18,7 @@ private:
     // access the processor object that created it.
     iphoneAudioAudioProcessor& audioProcessor;
 
+    DraggableComponent draggableComponent; 
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (iphoneAudioAudioProcessorEditor)
 };
